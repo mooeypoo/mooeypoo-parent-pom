@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.mooeypoo</groupId>
+    <artifactId>mooeypoo-parent-pom</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Parent pom for Maven projects by Mooeypoo</name>
+
+    <url>https://github.com/mooeypoo/mooeypoo-parent-pom</url>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License, Version 3</name>
+            <url>https://www.gnu.org/licenses/</url>
+            <distribution>repo</distribution>
+            <comments>Strong copyleft license, commonly known as the GNU GPL v3</comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>mooeypoo</id>
+            <name>Moriel Schottlender</name>
+            <timezone>America/Los_Angeles</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:mooeypoo/mooeypoo-parent-pom.git</connection>
+        <developerConnection>scm:git:git@github.com:mooeypoo/mooeypoo-parent-pom.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>scm:git:git@github.com:mooeypoo/mooeypoo-parent-pom.git</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <!--
+                Define default configuration for all plugins. This includes
+                fixing versions for all standard plugins so that they don't
+                depend on the version of Maven used.
+            -->
+            <plugins>
+                <plugin>
+                    <groupId>com.github.ekryd.sortpom</groupId>
+                    <artifactId>sortpom-maven-plugin</artifactId>
+                    <version>2.12.0</version>
+                    <configuration>
+                        <expandEmptyElements>false</expandEmptyElements>
+                        <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
+                        <sortDependencies>scope,groupId,artifactId</sortDependencies>
+                        <sortPlugins>groupId,artifactId</sortPlugins>
+                        <lineSeparator>\n</lineSeparator>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <sortProperties>true</sortProperties>
+                        <keepBlankLines>true</keepBlankLines>
+                        <nrOfIndentSpace>4</nrOfIndentSpace>
+                        <verifyFail>Stop</verifyFail>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                            <phase>verify</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.0.0-M3</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>de.andrena.tools.nopackagecycles</groupId>
+                            <artifactId>no-package-cycles-enforcer-rule</artifactId>
+                            <version>1.0.9</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>enforce-maven-version</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <phase>validate</phase>
+                            <configuration>
+                                <rules>
+                                    <requireMavenVersion>
+                                        <version>3.8.4</version>
+                                    </requireMavenVersion>
+                                </rules>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>enforce-no-package-cycles</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <phase>verify</phase>
+                            <configuration>
+                                <rules>
+                                    <NoPackageCyclesRule implementation="de.andrena.tools.nopackagecycles.NoPackageCyclesRule" />
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>3.0.1</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                            <phase>verify</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.3.1</version>
+                    <configuration>
+                        <doclint>all,-missing</doclint>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.3.0-SNAPSHOT</version>
+                    <configuration>
+                        <!--
+                            The shaded jar isn't meant to be used as a
+                            dependency, no need to create a dependency reduced
+                            pom.
+                        -->
+                        <createDependencyReducedPom>false</createDependencyReducedPom>
+                        <!--
+                            We want to attach the shaded jar, but keep the
+                            original in case it needs to be reused.
+                        -->
+                        <shadedArtifactAttached>true</shadedArtifactAttached>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <phase>package</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.9.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.2.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Used for unit tests -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                    <configuration>
+                        <testFailureIgnore>true</testFailureIgnore>
+                        <!-- Sets the VM argument line used when unit tests are run. -->
+                        <!-- argLine>${surefireArgLine}</argLine -->
+                        <argLine>-Xmx1024m -XX:MaxPermSize=256m ${surefireArgLine}</argLine>
+                        <!-- Skips unit tests if the value of skip.unit.tests property is true -->
+                        <skipTests>${skip.unit.tests}</skipTests>
+                        <!-- Excludes integration tests when unit tests are run. -->
+                        <excludes>
+                            <exclude>**/IT*.java</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.5</version>
+                    <configuration />
+                    <executions>
+                        <!--
+                              Prepares the property pointing to the JaCoCo runtime agent which
+                              is passed as VM argument when Maven the Surefire plugin is executed.
+                          -->
+                        <execution>
+                            <id>pre-unit-test</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution data. -->
+                                <destFile>${project.build.directory}/coverage-reports/jacoco.exec</destFile>
+                                <!--
+                                      Sets the name of the property containing the settings
+                                      for JaCoCo runtime agent.
+                                  -->
+                                <propertyName>surefireArgLine</propertyName>
+                            </configuration>
+                        </execution>
+                        <!--
+                              Ensures that the code coverage report for unit tests is created after
+                              unit tests have been run.
+                          -->
+                        <execution>
+                            <id>post-unit-test</id>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <phase>test</phase>
+                            <configuration>
+                                <!-- Sets the path to the file which contains the execution data. -->
+                                <dataFile>${project.build.directory}/coverage-reports/jacoco.exec</dataFile>
+                                <!-- Sets the output directory for the code coverage report. -->
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.8</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <serverId>ossrh</serverId>
+                        <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <!--
+                These plugins are enabled for all child projects.
+            -->
+            <plugin>
+                <groupId>com.github.ekryd.sortpom</groupId>
+                <artifactId>sortpom-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <!--
+                GPG signing is required for publishing artifacts to Maven
+                Central. It isn't enabled by default to not interfere with CI
+                but this profile needs to be enabled during release with:
+                `./mvnw -B -Prelease release:prepare && ./mvnw -B -Prelease release:perform`
+            -->
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
