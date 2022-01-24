@@ -5,6 +5,8 @@
     <groupId>io.github.mooeypoo</groupId>
     <artifactId>mooeypoo-parent-pom</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
     <name>Parent pom for Maven projects by Mooeypoo</name>
 
     <url>https://github.com/mooeypoo/mooeypoo-parent-pom</url>
