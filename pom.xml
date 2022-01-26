@@ -27,6 +27,9 @@
             <timezone>America/Los_Angeles</timezone>
         </developer>
     </developers>
+    <modules>
+        <module>minecraft-plugin-pom</module>
+    </modules>
 
     <scm>
         <connection>scm:git:git@github.com:mooeypoo/mooeypoo-parent-pom.git</connection>
@@ -71,23 +74,6 @@
                 <optional>true</optional>
             </dependency>
             <dependency>
-                <groupId>org.spigotmc</groupId>
-                <artifactId>spigot-api</artifactId>
-                <version>1.18-R0.1-SNAPSHOT</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>space.arim.dazzleconf</groupId>
-                <artifactId>dazzleconf-ext-snakeyaml</artifactId>
-                <version>1.2.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.yaml</groupId>
-                <artifactId>snakeyaml</artifactId>
-                <version>1.28</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>3.22.0</version>
@@ -96,6 +82,13 @@
 
         </dependencies>
     </dependencyManagement>
+    <pluginRepositories>
+        <pluginRepository>
+            <!-- This is so it's possible to get maven-shade-plugin snapshot, which is required for java17 -->
+            <id>maven-snapshots</id>
+            <url>https://repository.apache.org/content/repositories/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <pluginManagement>
