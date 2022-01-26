@@ -91,6 +91,12 @@
     </pluginRepositories>
 
     <build>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <pluginManagement>
             <!--
                 Define default configuration for all plugins. This includes
